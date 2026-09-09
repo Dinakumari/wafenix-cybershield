@@ -697,49 +697,123 @@
     });
   }
 
-  const bookingModal = document.getElementById('bookingModal');
-  const bookBtn = document.getElementById('bookBtn');
-  const bookingDate = document.getElementById('bookingDate');
-  function openBooking(){
-    if(bookingDate){ bookingDate.min = new Date().toISOString().slice(0,10); }
-    bookingModal.classList.add('open'); bookingModal.setAttribute('aria-hidden','false');
-    document.body.style.overflow='hidden';
-  }
-  function closeBooking(){
-    bookingModal.classList.remove('open'); bookingModal.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-  }
-  if(bookBtn) bookBtn.addEventListener('click', openBooking);
-  if(bookingModal){ bookingModal.addEventListener('click', e => { if(e.target === bookingModal) closeBooking(); }); }
-  document.querySelectorAll('[data-close-booking]').forEach(el => el.addEventListener('click', closeBooking));
-  document.addEventListener('keydown', e => { if(e.key === 'Escape' && bookingModal.classList.contains('open')) closeBooking(); });
+  /* ---------- BOOKING MODAL ---------- */
 
-  const bookingForm = document.getElementById('bookingForm');
-  if(bookingForm){
-    bookingForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const status = document.getElementById('bookingStatus');
-      status.textContent = 'Submitting booking request...';
-      const payload = Object.fromEntries(new FormData(bookingForm));
-      const wa = 'https://wa.me/918700323463?text=' + encodeURIComponent(`Hello Wafenix CyberShield, I would like to book a call. Preferred date: ${payload.booking_date}, time: ${payload.booking_time}. Name: ${payload.name}. Company: ${payload.company}. Phone: ${payload.phone || 'Not provided'}.`);
-      try{
-        const r = await fetch('/api/bookings', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
-        const data = await r.json();
-        if(!r.ok) throw new Error(data.error || 'Unable to submit booking.');
-        status.textContent = data.message + ' Opening WhatsApp for confirmation...';
-        window.open(wa, '_blank', 'noopener');
-        bookingForm.reset();
-      }catch(err){
-        // Graceful fallback for static previews or deployments where the API is not running.
-        // The booking is NOT stored in SQLite in fallback mode.
-        status.textContent = 'Booking server is not connected. Opening WhatsApp so the request is not lost.';
-        window.open(wa, '_blank', 'noopener');
+const bookingModal = document.getElementById('bookingModal');
+const bookBtn = document.getElementById('bookBtn');
+const bookingDate = document.getElementById('bookingDate');
+const bookingForm = document.getElementById('bookingForm');
+
+function openBooking() {
+  if (!bookingModal) {
+    console.error('Booking modal not found');
+    return;
+  }
+
+  if (bookingDate) {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+
+    bookingDate.min = `${year}-${month}-${day}`;
+  }
+
+  bookingModal.classList.add('open');
+  bookingModal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeBooking() {
+  if (!bookingModal) return;
+
+  bookingModal.classList.remove('open');
+  bookingModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+/* Open popup */
+if (bookBtn) {
+  bookBtn.addEventListener('click', function (event) {
+    event.preventDefault();
+    openBooking();
+  });
+}
+
+/* Close popup */
+document.querySelectorAll('[data-close-booking]').forEach(function (element) {
+  element.addEventListener('click', function () {
+    closeBooking();
+  });
+});
+
+/* Close when pressing Escape */
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    closeBooking();
+  }
+});
+
+/* Submit booking */
+if (bookingForm) {
+  bookingForm.addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+    const status = document.getElementById('bookingStatus');
+    const payload = Object.fromEntries(new FormData(bookingForm));
+
+    status.textContent = 'Submitting booking request...';
+
+    const whatsappMessage =
+      'Hello Wafenix CyberShield, I would like to book a call. ' +
+      'Preferred date: ' + payload.booking_date +
+      ', time: ' + payload.booking_time +
+      '. Name: ' + payload.name +
+      '. Company: ' + payload.company +
+      '. Phone: ' + (payload.phone || 'Not provided') + '.';
+
+    const whatsappURL =
+      'https://wa.me/918700323463?text=' +
+      encodeURIComponent(whatsappMessage);
+
+    try {
+      const response = await fetch('/api/bookings', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Unable to submit booking.');
       }
-    });
-  }
 
+      status.textContent =
+        (data.message || 'Booking request submitted successfully.') +
+        ' Opening WhatsApp...';
 
-</script>
+      bookingForm.reset();
+
+      setTimeout(function () {
+        window.open(whatsappURL, '_blank', 'noopener');
+      }, 500);
+
+    } catch (error) {
+      console.error('Booking error:', error);
+
+      status.textContent =
+        'Booking server is not connected. Opening WhatsApp...';
+
+      setTimeout(function () {
+        window.open(whatsappURL, '_blank', 'noopener');
+      }, 500);
+    }
+  });
+}
+  </script>
 
 </body>
 </html>
