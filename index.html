@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wafenix CyberShield — WAF, Firewall & Application Security</title>
+<meta name="description" content="Wafenix CyberShield provides WAF deployment, firewall management, IDS/IPS, VPN configuration, vulnerability assessment and security monitoring for vendors and enterprises across India.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="/">
+<meta property="og:title" content="Wafenix CyberShield — WAF & Application Security">
+<meta property="og:description" content="Hands-on WAF, firewall and application security services for vendors and enterprises across India.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"Wafenix CyberShield",
+  "url":"/",
+  "email":"hello@wafenixcybershield.com",
+  "telephone":"+91 87003 23463",
+  "description":"WAF, firewall, IDS/IPS, VPN, vulnerability assessment and security monitoring services."
+}</script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg: #0A0E1A;
+    --surface: #10162A;
+    --surface-2: #161D35;
+    --line: #232B47;
+    --text: #E8ECF4;
+    --muted: #8B93A7;
+    --allow: #35C97D;
+    --block: #E8556B;
+    --amber: #E3A64B;
+    --focus: #6FA8FF;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  .mono{ font-family:'IBM Plex Mono', monospace; }
+
+  :focus-visible{
+    outline:2px solid var(--focus);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:1140px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,14,26,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px;
+    max-width:1140px; margin:0 auto;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono', monospace;
+    font-weight:600; font-size:17px; letter-spacing:0.02em;
+  }
+  .brand .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--allow);
+    box-shadow:0 0 8px var(--allow);
+  }
+  .navlinks{ display:flex; gap:32px; }
+  .navlinks a{
+    font-size:14.5px; color:var(--muted);
+    transition:color .15s ease;
+  }
+  .navlinks a:hover{ color:var(--text); }
+  .nav-cta{
+    font-size:14px; font-weight:600;
+    padding:9px 18px;
+    border:1px solid var(--allow);
+    border-radius:3px;
+    color:var(--allow) !important;
+  }
+  .nav-cta:hover{ background:var(--allow); color:var(--bg) !important; }
+  .hamburger{ display:none; background:none; border:1px solid var(--line); color:var(--text); padding:8px 11px; border-radius:3px; font-size:18px; cursor:pointer; }
+  .mobile-menu{ display:none; max-width:1140px; margin:0 auto; padding:0 28px 18px; gap:14px; }
+  .mobile-menu a{ color:var(--muted); font-size:14px; padding:8px 0; }
+  .mobile-menu.open{ display:grid; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:96px 0 72px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 100%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--amber);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:''; width:22px; height:1px; background:var(--amber);
+  }
+  h1{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:44px; line-height:1.16; font-weight:600;
+    letter-spacing:-0.01em;
+    margin-bottom:22px;
+  }
+  h1 .accent{ color:var(--allow); }
+  .hero p.lede{
+    font-size:17px; color:var(--muted); max-width:480px; margin-bottom:34px;
+  }
+  .hero-ctas{ display:flex; gap:14px; flex-wrap:wrap; margin-bottom:38px; }
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:14px; font-weight:600;
+    padding:13px 24px; border-radius:3px;
+    display:inline-block; transition:all .15s ease;
+    border:1px solid transparent;
+  }
+  .btn-primary{ background:var(--allow); color:#04150C; }
+  .btn-primary:hover{ background:#2eb56f; }
+  .btn-ghost{ border-color:var(--line); color:var(--text); }
+  .btn-ghost:hover{ border-color:var(--muted); }
+
+  .hero-stats{ display:flex; gap:38px; }
+  .hero-stats .stat b{
+    display:block; font-family:'IBM Plex Mono', monospace;
+    font-size:24px; color:var(--text);
+  }
+  .hero-stats .stat span{ font-size:13px; color:var(--muted); }
+
+  /* ---------- TERMINAL / SIGNATURE ELEMENT ---------- */
+  .terminal{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 24px 60px -20px rgba(0,0,0,0.6);
+  }
+  .terminal-head{
+    display:flex; align-items:center; gap:8px;
+    padding:12px 16px;
+    background:var(--surface-2);
+    border-bottom:1px solid var(--line);
+  }
+  .terminal-head .tdot{ width:9px; height:9px; border-radius:50%; background:var(--line); }
+  .terminal-title{
+    margin-left:8px; font-family:'IBM Plex Mono', monospace;
+    font-size:12px; color:var(--muted);
+  }
+  .terminal-body{
+    padding:18px 16px; min-height:300px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+  }
+  .log-line{
+    display:flex; gap:10px; align-items:baseline;
+    padding:6px 0;
+    border-bottom:1px dashed rgba(255,255,255,0.04);
+    opacity:0; transform:translateY(4px);
+    animation:logIn .35s ease forwards;
+  }
+  @keyframes logIn{ to{ opacity:1; transform:translateY(0); } }
+  .log-time{ color:#5B6480; flex-shrink:0; }
+  .log-ip{ color:#9AA5C0; flex-shrink:0; }
+  .log-path{ color:var(--text); flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .log-tag{ flex-shrink:0; font-weight:600; padding:1px 7px; border-radius:3px; font-size:11px; }
+  .tag-allow{ color:var(--allow); background:rgba(53,201,125,0.1); }
+  .tag-block{ color:var(--block); background:rgba(232,85,107,0.1); }
+  .terminal-foot{
+    padding:12px 16px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; font-family:'IBM Plex Mono', monospace;
+    font-size:12px; color:var(--muted);
+  }
+  .terminal-foot .n-block{ color:var(--block); }
+  .terminal-foot .n-allow{ color:var(--allow); }
+
+  @media (prefers-reduced-motion: reduce){
+    .log-line{ animation:none; opacity:1; transform:none; }
+  }
+
+  /* ---------- SECTION SHARED ---------- */
+  section{ padding:88px 0; border-bottom:1px solid var(--line); }
+  .section-head{ max-width:620px; margin-bottom:52px; }
+  .section-head .eyebrow{ margin-bottom:16px; }
+  h2{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:30px; font-weight:600; letter-spacing:-0.01em;
+    margin-bottom:14px;
+  }
+  .section-head p{ color:var(--muted); font-size:15.5px; }
+
+  /* ---------- PROBLEM / STATS ---------- */
+  .stat-row{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden;
+  }
+  .stat-cell{ background:var(--surface); padding:30px 24px; }
+  .stat-cell b{
+    display:block; font-family:'IBM Plex Mono', monospace; font-size:32px; color:var(--allow); margin-bottom:8px;
+  }
+  .stat-cell span{ font-size:13.5px; color:var(--muted); }
+
+  /* ---------- SERVICES ---------- */
+  .service-grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); border-radius:8px; overflow:hidden;
+  }
+  .service-card{ background:var(--surface); padding:32px 28px; }
+  .service-num{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--amber); margin-bottom:16px;
+  }
+  .service-card h3{ font-size:17px; font-weight:600; margin-bottom:10px; }
+  .service-card p{ font-size:14px; color:var(--muted); }
+
+  /* ---------- PROCESS (real sequence -> numbered) ---------- */
+  .process{ display:flex; flex-direction:column; }
+  .proc-step{
+    display:grid; grid-template-columns:64px 1fr; gap:24px;
+    padding:26px 0; border-top:1px solid var(--line);
+  }
+  .proc-step:last-child{ border-bottom:1px solid var(--line); }
+  .proc-num{ font-family:'IBM Plex Mono', monospace; font-size:22px; color:var(--line); font-weight:600; }
+  .proc-body h3{ font-size:17px; font-weight:600; margin-bottom:6px; }
+  .proc-body p{ font-size:14.5px; color:var(--muted); max-width:560px; }
+
+  /* ---------- FOUNDER / CREDIBILITY ---------- */
+  .founder{
+    display:grid; grid-template-columns:1fr 1.4fr; gap:52px; align-items:start;
+  }
+  .founder-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:32px;
+  }
+  .founder-card .initials{
+    width:52px; height:52px; border-radius:50%;
+    background:var(--surface-2); border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono', monospace; font-weight:600; color:var(--allow);
+    margin-bottom:18px;
+  }
+  .founder-card h4{ font-size:16px; margin-bottom:4px; }
+  .founder-card span{ font-size:13px; color:var(--muted); }
+  .founder-list{ list-style:none; margin-top:20px; }
+  .founder-list li{
+    font-size:14px; color:var(--muted); padding:8px 0 8px 20px; position:relative;
+    border-top:1px solid var(--line);
+  }
+  .founder-list li:first-child{ border-top:none; }
+  .founder-list li::before{
+    content:'›'; position:absolute; left:0; color:var(--allow); font-weight:700;
+  }
+  .founder-copy p{ color:var(--muted); font-size:15.5px; margin-bottom:16px; }
+  .badge-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:22px; }
+  .badge{
+    font-family:'IBM Plex Mono', monospace; font-size:12px;
+    border:1px solid var(--line); padding:6px 12px; border-radius:20px; color:var(--muted);
+  }
+
+  /* ---------- CTA ---------- */
+  .cta-section{ border-bottom:none; }
+  .cta-box{
+    background:linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+    border:1px solid var(--line); border-radius:10px;
+    padding:56px; text-align:center;
+    position:relative; overflow:hidden;
+  }
+  .cta-box h2{ margin-bottom:12px; }
+  .cta-box p{ color:var(--muted); font-size:15.5px; margin-bottom:30px; max-width:460px; margin-left:auto; margin-right:auto; }
+
+  .lead-form{ max-width:560px; margin:0 auto 28px; text-align:left; }
+  .form-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .lead-form input,.lead-form textarea{ width:100%; background:var(--bg); border:1px solid var(--line); color:var(--text); padding:12px 14px; border-radius:4px; font:14px 'IBM Plex Sans',sans-serif; margin-bottom:12px; }
+  .lead-form input:focus,.lead-form textarea:focus{ outline:2px solid var(--focus); outline-offset:1px; }
+  .lead-form textarea{ resize:vertical; }
+  .form-note{ color:var(--allow); font-size:13px; min-height:20px; margin-top:10px; }
+  /* ---------- FOOTER ---------- */
+  footer{ padding:40px 0; }
+  .foot-row{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+  }
+  .foot-row .brand{ font-size:14px; }
+  .foot-links{ display:flex; gap:24px; }
+  .foot-links a{ font-size:13.5px; color:var(--muted); }
+  .foot-links a:hover{ color:var(--text); }
+  footer .fine{ font-size:12.5px; color:#5B6480; margin-top:18px; }
+
+
+  /* ---------- BOOKING / FLOATING CONTACT ---------- */
+  .founder-stack{ display:grid; gap:14px; }
+  .modal{ display:none; position:fixed; inset:0; z-index:100; align-items:center; justify-content:center; padding:22px; }
+  .modal.open{ display:flex; }
+  .modal-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,.72); backdrop-filter:blur(5px); }
+  .modal-card{ position:relative; z-index:1; width:min(620px,100%); max-height:92vh; overflow:auto; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:34px; box-shadow:0 30px 90px rgba(0,0,0,.55); }
+  .modal-close{ position:absolute; top:12px; right:14px; background:none; border:0; color:var(--muted); font-size:30px; line-height:1; cursor:pointer; }
+  .modal-copy{ color:var(--muted); font-size:14px; margin-bottom:24px; }
+  .modal-card label{ display:block; color:var(--muted); font-size:12px; }
+  .modal-card input,.modal-card textarea{ margin-top:5px; }
+  .modal-card .btn{ cursor:pointer; }
+  .whatsapp-fab{ position:fixed; right:20px; bottom:22px; z-index:60; display:flex; align-items:center; gap:9px; background:#25D366; color:#06140b; border:1px solid rgba(255,255,255,.18); border-radius:999px; padding:11px 15px 11px 12px; font-weight:700; box-shadow:0 12px 35px rgba(0,0,0,.4); }
+  .whatsapp-fab:hover{ transform:translateY(-2px); }
+  .wa-icon{ width:27px; height:27px; display:grid; place-items:center; border:2px solid currentColor; border-radius:50%; font-size:17px; }
+  .wa-label{ font-family:'IBM Plex Mono',monospace; font-size:12px; }
+  @media (max-width:600px){ .form-grid{ grid-template-columns:1fr; gap:0; } .modal-card{ padding:28px 20px; } .whatsapp-fab{ right:12px; bottom:14px; } .wa-label{ display:none; } .whatsapp-fab{ padding:10px; } }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:860px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .navlinks{ display:none; } .hamburger{ display:block; }
+    h1{ font-size:32px; }
+    .stat-row{ grid-template-columns:repeat(2,1fr); }
+    .service-grid{ grid-template-columns:1fr; }
+    .founder{ grid-template-columns:1fr; }
+    .hero-stats{ flex-wrap:wrap; row-gap:16px; }
+    .cta-box{ padding:36px 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="brand"><span class="dot"></span>WAFENIX<span style="color:var(--muted); font-weight:400;">CyberShield</span></div>
+    <div class="navlinks">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="/privacy">Privacy</a>
+    </div>
+    <a href="#contact" class="nav-cta">Request Assessment</a>
+    <button class="hamburger" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#services">Services</a>
+    <a href="#process">Process</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" style="border-bottom:1px solid var(--line); padding-bottom:72px;">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Web Application Firewall Solutions</div>
+        <h1>Stop malicious traffic <span class="accent">before</span> it reaches your application.</h1>
+        <p class="lede">Wafenix CyberShield deploys, tunes, and manages WAF protection for vendors and enterprises across India — from onboarding your first URL to running the rule engine that guards it every day.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">Request a Free Assessment</a>
+          <a href="#services" class="btn btn-ghost">See what we protect</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat"><b>WAF</b><span>Application protection</span></div>
+          <div class="stat"><b>24×7</b><span>Threat monitoring</span></div>
+          <div class="stat"><b>India</b><span>Vendor & enterprise focus</span></div>
+        </div>
+      </div>
+
+      <div class="terminal" aria-hidden="true">
+        <div class="terminal-head">
+          <span class="tdot"></span><span class="tdot"></span><span class="tdot"></span>
+          <span class="terminal-title">wafenix — live rule engine</span>
+        </div>
+        <div class="terminal-body" id="logFeed"></div>
+        <div class="terminal-foot">
+          <span>Requests inspected: <span class="mono" id="totalCount">0</span></span>
+          <span><span class="n-allow" id="allowCount">0</span> allowed · <span class="n-block" id="blockCount">0</span> blocked</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM / STATS -->
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">The exposure</div>
+        <h2>Every unprotected endpoint is an open door.</h2>
+        <p>Vendors running customer-facing portals, APIs, and payment flows are probed constantly. Without a tuned WAF sitting in front of the application, the first sign of an attack is usually the breach itself.</p>
+      </div>
+      <div class="stat-row">
+        <div class="stat-cell"><b>SQLi</b><span>Injection attempts on unfiltered input fields</span></div>
+        <div class="stat-cell"><b>XSS</b><span>Script injection via forms and query params</span></div>
+        <div class="stat-cell"><b>L7 DDoS</b><span>Application-layer floods that bypass network firewalls</span></div>
+        <div class="stat-cell"><b>Bot abuse</b><span>Credential stuffing and scraping at scale</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">What we deploy</div>
+        <h2>Security services, built around your stack.</h2>
+        <p>We work across the major WAF and perimeter platforms — matching the tool to your infrastructure rather than forcing a single vendor.</p>
+      </div>
+      <div class="service-grid">
+        <div class="service-card">
+          <div class="service-num">01</div>
+          <h3>WAF Deployment &amp; Onboarding</h3>
+          <p>Rule configuration and rollout across Checkpoint and Cloudflare WAF — sized for a single portal or a full vendor network.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-num">02</div>
+          <h3>Firewall Management</h3>
+          <p>Ongoing policy and rule management on Palo Alto, Checkpoint, and Fortigate perimeter firewalls.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-num">03</div>
+          <h3>IDS / IPS</h3>
+          <p>Intrusion detection and prevention tuned to your traffic baseline, cutting false positives without missing real signals.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-num">04</div>
+          <h3>VPN Configuration</h3>
+          <p>Secure remote access set up for distributed teams and third-party vendor connections.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-num">05</div>
+          <h3>Vulnerability Assessment</h3>
+          <p>Scheduled scans and manual review that surface exposure before it's found by someone else.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-num">06</div>
+          <h3>Ongoing Monitoring</h3>
+          <p>Rule tuning and incident response as traffic patterns and threats evolve — not a one-time install.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="eyebrow">How an onboarding runs</div>
+        <h2>From first scan to protected endpoint.</h2>
+        <p>A repeatable onboarding process designed to scale across a vendor network.</p>
+      </div>
+      <div class="process">
+        <div class="proc-step">
+          <div class="proc-num">01</div>
+          <div class="proc-body">
+            <h3>Assess</h3>
+            <p>We map your application surface, traffic patterns, and existing controls to identify what needs protection first.</p>
+          </div>
+        </div>
+        <div class="proc-step">
+          <div class="proc-num">02</div>
+          <div class="proc-body">
+            <h3>Configure</h3>
+            <p>WAF rules, firewall policy, and IDS/IPS signatures are built around your actual traffic — not a generic template.</p>
+          </div>
+        </div>
+        <div class="proc-step">
+          <div class="proc-num">03</div>
+          <div class="proc-body">
+            <h3>Deploy</h3>
+            <p>Rollout in monitor mode first, then enforced — so legitimate traffic is never blocked on day one.</p>
+          </div>
+        </div>
+        <div class="proc-step">
+          <div class="proc-num">04</div>
+          <div class="proc-body">
+            <h3>Monitor &amp; Tune</h3>
+            <p>Rules are revisited as new endpoints, threats, and traffic patterns emerge.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT / FOUNDER -->
+  <section id="about">
+    <div class="wrap founder">
+      <div class="founder-stack">
+        <div class="founder-card">
+          <div class="initials">MG</div>
+          <h4>Megha Gupta</h4>
+          <span>Founder — Network Security Engineer</span>
+          <ul class="founder-list">
+            <li>Network &amp; application security</li>
+            <li>WAF deployment, onboarding &amp; rule tuning</li>
+            <li>Palo Alto · Checkpoint · Fortigate · Cloudflare</li>
+          </ul>
+        </div>
+        <div class="founder-card">
+          <div class="initials">KG</div>
+          <h4>Keshav Gupta</h4>
+          <span>Co-Founder — Network &amp; Application Security</span>
+          <ul class="founder-list">
+            <li>Network security &amp; perimeter controls</li>
+            <li>Firewall protocols, routing &amp; packet-switching fundamentals</li>
+            <li>Palo Alto · Checkpoint · Fortigate · Cloudflare</li>
+          </ul>
+        </div>
+      </div>
+      <div class="founder-copy">
+        <div class="eyebrow">Why Wafenix CyberShield</div>
+        <h2 style="margin-bottom:18px;">Built by someone who's done the onboarding, not just sold it.</h2>
+        <p>Wafenix CyberShield was started to bring hands-on WAF and perimeter security expertise to vendors across India who need real protection, not just a checkbox.</p>
+        <p>Every deployment is configured by engineers who have run this exact process before — from initial traffic assessment through to a fully tuned, monitored rule set.</p>
+        <div class="badge-row">
+          <span class="badge">Palo Alto</span>
+          <span class="badge">Checkpoint</span>
+          <span class="badge">Fortigate</span>
+          <span class="badge">Cloudflare WAF</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA / CONTACT -->
+  <section class="cta-section" id="contact">
+    <div class="wrap">
+      <div class="cta-box">
+        <div class="eyebrow" style="justify-content:center;">Get started</div>
+        <h2>Let's assess your exposure.</h2>
+        <p>Tell us about your application and vendor network — we'll map out where a WAF makes the biggest difference first.</p>
+        <form class="lead-form" id="leadForm">
+          <div class="form-grid">
+            <input name="name" placeholder="Your name" autocomplete="name" required>
+            <input name="email" type="email" placeholder="Work email" autocomplete="email" required>
+          </div>
+          <input name="company" placeholder="Company / organisation" autocomplete="organization" required>
+          <textarea name="message" rows="4" placeholder="Tell us what you want to protect..." required></textarea>
+          <button class="btn btn-primary" type="submit">Send enquiry</button>
+          <div class="form-note" id="formStatus" role="status" aria-live="polite"></div>
+        </form>
+        <div class="hero-ctas" style="justify-content:center; margin-bottom:0;">
+          <button type="button" class="btn btn-ghost" id="bookBtn">Book a call</button>
+          <a href="https://wa.me/918700323463?text=Hello%20Wafenix%20CyberShield%2C%20I%20would%20like%20to%20book%20a%20WAF%20assessment." class="btn btn-ghost" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<div class="modal" id="bookingModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-booking></div>
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+    <button class="modal-close" type="button" aria-label="Close" data-close-booking>×</button>
+    <div class="eyebrow">Schedule a conversation</div>
+    <h2 id="bookingTitle">Book a call</h2>
+    <p class="modal-copy">Choose a preferred date and time. Your request is saved securely and the team can confirm the slot with you.</p>
+    <form id="bookingForm">
+      <div class="form-grid">
+        <input name="name" placeholder="Your name" autocomplete="name" required>
+        <input name="email" type="email" placeholder="Work email" autocomplete="email" required>
+      </div>
+      <div class="form-grid">
+        <input name="company" placeholder="Company / organisation" autocomplete="organization" required>
+        <input name="phone" placeholder="Phone / WhatsApp" autocomplete="tel">
+      </div>
+      <div class="form-grid">
+        <label>Date<input name="booking_date" id="bookingDate" type="date" required></label>
+        <label>Preferred time<input name="booking_time" type="time" required></label>
+      </div>
+      <textarea name="message" rows="3" placeholder="Anything we should know? (optional)"></textarea>
+      <button class="btn btn-primary" type="submit">Submit booking request</button>
+      <div class="form-note" id="bookingStatus" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+<a class="whatsapp-fab" href="https://wa.me/918700323463?text=Hello%20Wafenix%20CyberShield%2C%20I%20would%20like%20to%20enquire%20about%20your%20security%20services." target="_blank" rel="noopener" aria-label="Chat with Wafenix CyberShield on WhatsApp">
+  <span class="wa-icon">☏</span><span class="wa-label">WhatsApp</span>
+</a>
+
+<footer>
+  <div class="wrap foot-row">
+    <div class="brand"><span class="dot"></span>WAFENIX<span style="color:var(--muted); font-weight:400;">CyberShield</span></div>
+    <div class="foot-links">
+      <a href="#services">Services</a>
+      <a href="#process">Process</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="/privacy">Privacy</a>
+    </div>
+  </div>
+  <div class="wrap fine">© 2026 Wafenix CyberShield. WAF, firewall, and network security services for vendors across India.</div>
+</footer>
+
+<script>
+  const paths = [
+    "/api/v1/login", "/checkout/session", "/wp-admin/setup.php", "/api/users?id=1' OR '1'='1",
+    "/account/profile", "/uploads/invoice.pdf", "/api/v2/orders", "/search?q=<script>alert(1)</script>",
+    "/api/payments/verify", "/static/app.js", "/api/vendors/list", "/.env",
+    "/api/cart/add", "/admin/config.php", "/api/v1/health", "/products?category=electronics",
+    "/api/token/refresh", "/../../etc/passwd", "/api/reports/export", "/dashboard/summary"
+  ];
+  const ips = ["103.21.244.10","185.220.101.5","49.36.87.212","104.28.4.19","171.76.82.9","203.0.113.44","192.0.2.77","198.51.100.23"];
+
+  const feed = document.getElementById('logFeed');
+  const totalEl = document.getElementById('totalCount');
+  const allowEl = document.getElementById('allowCount');
+  const blockEl = document.getElementById('blockCount');
+  let total = 0, allow = 0, block = 0;
+  const MAX_LINES = 9;
+
+  function pad(n){ return n.toString().padStart(2,'0'); }
+  function timestamp(){
+    const d = new Date();
+    return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+
+  function addLine(){
+    const path = paths[Math.floor(Math.random()*paths.length)];
+    const ip = ips[Math.floor(Math.random()*ips.length)];
+    const suspicious = /['"<>]|\.\.|\.env|OR '1'/.test(path);
+    const isBlocked = suspicious ? Math.random() < 0.9 : Math.random() < 0.06;
+
+    const line = document.createElement('div');
+    line.className = 'log-line';
+    line.innerHTML = `
+      <span class="log-time">${timestamp()}</span>
+      <span class="log-ip">${ip}</span>
+      <span class="log-path">${path}</span>
+      <span class="log-tag ${isBlocked ? 'tag-block' : 'tag-allow'}">${isBlocked ? 'BLOCKED' : 'ALLOWED'}</span>
+    `;
+    feed.appendChild(line);
+    total++; isBlocked ? block++ : allow++;
+    totalEl.textContent = total;
+    allowEl.textContent = allow;
+    blockEl.textContent = block;
+
+    while(feed.children.length > MAX_LINES){
+      feed.removeChild(feed.firstChild);
+    }
+    feed.scrollTop = feed.scrollHeight;
+  }
+
+  for(let i=0;i<6;i++) addLine();
+  setInterval(addLine, 1400);
+
+  const menuBtn = document.getElementById('menuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  if(menuBtn && mobileMenu){
+    menuBtn.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', open);
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      mobileMenu.classList.remove('open');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    }));
+  }
+
+  const leadForm = document.getElementById('leadForm');
+  if(leadForm){
+    leadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('formStatus');
+      status.textContent = 'Sending enquiry...';
+      try{
+        const r = await fetch('/api/leads', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(Object.fromEntries(new FormData(leadForm)))});
+        const data = await r.json();
+        if(!r.ok) throw new Error(data.error || 'Unable to send enquiry.');
+        status.textContent = data.message;
+        leadForm.reset();
+      }catch(err){ status.textContent = err.message; }
+    });
+  }
+
+  const bookingModal = document.getElementById('bookingModal');
+  const bookBtn = document.getElementById('bookBtn');
+  const bookingDate = document.getElementById('bookingDate');
+  function openBooking(){
+    if(bookingDate){ bookingDate.min = new Date().toISOString().slice(0,10); }
+    bookingModal.classList.add('open'); bookingModal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeBooking(){
+    bookingModal.classList.remove('open'); bookingModal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+  if(bookBtn) bookBtn.addEventListener('click', openBooking);
+  if(bookingModal){ bookingModal.addEventListener('click', e => { if(e.target === bookingModal) closeBooking(); }); }
+  document.querySelectorAll('[data-close-booking]').forEach(el => el.addEventListener('click', closeBooking));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && bookingModal.classList.contains('open')) closeBooking(); });
+
+  const bookingForm = document.getElementById('bookingForm');
+  if(bookingForm){
+    bookingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('bookingStatus');
+      status.textContent = 'Submitting booking request...';
+      const payload = Object.fromEntries(new FormData(bookingForm));
+      const wa = 'https://wa.me/918700323463?text=' + encodeURIComponent(`Hello Wafenix CyberShield, I would like to book a call. Preferred date: ${payload.booking_date}, time: ${payload.booking_time}. Name: ${payload.name}. Company: ${payload.company}. Phone: ${payload.phone || 'Not provided'}.`);
+      try{
+        const r = await fetch('/api/bookings', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
+        const data = await r.json();
+        if(!r.ok) throw new Error(data.error || 'Unable to submit booking.');
+        status.textContent = data.message + ' Opening WhatsApp for confirmation...';
+        window.open(wa, '_blank', 'noopener');
+        bookingForm.reset();
+      }catch(err){
+        // Graceful fallback for static previews or deployments where the API is not running.
+        // The booking is NOT stored in SQLite in fallback mode.
+        status.textContent = 'Booking server is not connected. Opening WhatsApp so the request is not lost.';
+        window.open(wa, '_blank', 'noopener');
+      }
+    });
+  }
+
+
+</script>
+
+</body>
+</html>

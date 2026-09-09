@@ -1,0 +1,20 @@
+{
+  "name": "wafenix-cybershield",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Wafenix CyberShield lead and booking website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": { "node": ">=20" },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "compression": "^1.8.1",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0"
+  }
+}

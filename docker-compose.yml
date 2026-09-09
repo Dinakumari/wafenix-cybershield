@@ -1,0 +1,13 @@
+services:
+  wafenix:
+    build: .
+    container_name: wafenix-cybershield
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "3000:3000"
+    volumes:
+      - wafenix_data:/app/data
+
+volumes:
+  wafenix_data:
